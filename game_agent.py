@@ -258,6 +258,41 @@ class CustomPlayer:
         """
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
+        optimalScore = float('-inf')
+        optimalMove = (-1, -1)
 
-        # TODO: finish this function!
-        raise NotImplementedError
+        #  base Cases
+        #  player won
+        if game.is_winner(self):
+            # print("found winning move")
+            return self.score(game, self), game.get_player_location(self)
+        # player lost
+        if game.is_loser(self):
+            # print("found losing move")
+            return self.score(game, self), game.get_player_location(self)
+        # no more legal moves
+        if len(game.get_legal_moves()) == 0:
+            return self.score(game, self), optimalMove
+        # searched far enough
+        if depth == 0:
+            return self.score(game, self), game.get_player_location(self)
+
+        # check if we  are looking for maxim or minimum, return that move
+        if maximizing_player:
+            # print("searching maxim player")
+            optimalScore = float("-inf")
+            for move in game.get_legal_moves():
+                updatedScore, updatedMove = self.minimax(game.forecast_move(move), depth - 1, False)
+                if updatedScore > optimalScore:
+                    optimalScore = updatedScore
+                    optimalMove = move
+        else:
+            # print("searching minimum player")
+            optimalScore = float("inf")
+            for move in game.get_legal_moves():
+                updatedScore, updatedMove = self.minimax(game.forecast_move(move), depth - 1, True)
+                if updatedScore < optimalScore:
+                    optimalScore = updatedScore
+                    optimalMove = move
+
+        return optimalScore, optimalMove

@@ -136,7 +136,12 @@ class CustomPlayer:
             # here in order to avoid timeout. The try/except block will
             # automatically catch the exception raised by the search method
             # when the timer gets close to expiring
-            score, move = self.minimax(game, self.search_depth)
+            if self.method == 'alphabeta':
+                print('trying alphabeta')
+                score, move = self.alphabeta(game, self.search_depth)
+
+            else:
+                score, move = self.minimax(game, self.search_depth)
 
 
          except Timeout:
@@ -179,7 +184,7 @@ class CustomPlayer:
         """
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
-        optimalScore = float('-inf')
+
         optimalMove = (-1, -1)
 
         #  base Cases
@@ -258,7 +263,7 @@ class CustomPlayer:
         """
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
-        optimalScore = float('-inf')
+
         optimalMove = (-1, -1)
 
         #  base Cases
@@ -278,21 +283,32 @@ class CustomPlayer:
             return self.score(game, self), game.get_player_location(self)
 
         # check if we  are looking for maxim or minimum, return that move
+        #alpha = float("-inf")
+        #beta = float("inf")
         if maximizing_player:
             # print("searching maxim player")
-            optimalScore = float("-inf")
+            optimalScore = alpha
             for move in game.get_legal_moves():
-                updatedScore, updatedMove = self.minimax(game.forecast_move(move), depth - 1, False)
+                updatedScore, updatedMove = self.alphabeta(game.forecast_move(move), depth - 1, alpha, beta, False)
                 if updatedScore > optimalScore:
                     optimalScore = updatedScore
+                    alpha = updatedScore
                     optimalMove = move
+
+                if beta <= alpha: # lets prune this branch
+                    return optimalScore, optimalMove
         else:
             # print("searching minimum player")
-            optimalScore = float("inf")
+            optimalScore = beta
+
             for move in game.get_legal_moves():
-                updatedScore, updatedMove = self.minimax(game.forecast_move(move), depth - 1, True)
+                updatedScore, updatedMove = self.alphabeta(game.forecast_move(move), depth - 1, alpha, beta, True)
                 if updatedScore < optimalScore:
                     optimalScore = updatedScore
+                    beta = updatedScore
                     optimalMove = move
+
+                if beta <= alpha: # lets prune this branch
+                    return optimalScore, optimalMove
 
         return optimalScore, optimalMove

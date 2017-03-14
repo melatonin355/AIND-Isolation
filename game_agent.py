@@ -36,12 +36,22 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
+    return custom(game, player)
 
-    # TODO: finish this function!
-    raise NotImplementedError
+# Optimize for a score that reduces opponents moves
+def custom(game, player):
+
+    if game.is_loser(player):
+        return -infinity
+    if game.is_winner(player):
+        return infinity
+
+    opponent = len(game.get_legal_moves(game.get_opponent(player)))
+    return float(-opponent)
 
 
 class CustomPlayer:
+
     """Game-playing agent that chooses a move using your evaluation function
     and a depth-limited minimax algorithm with alpha-beta pruning. You must
     finish and test this player to make sure it properly uses minimax and
@@ -70,6 +80,7 @@ class CustomPlayer:
         positive value large enough to allow the function to return before the
         timer expires.
     """
+
 
     def __init__(self, search_depth=3, score_fn=custom_score,
                  iterative=True, method='minimax', timeout=10.):
@@ -117,8 +128,6 @@ class CustomPlayer:
         """
 
         self.time_left = time_left
-
-        # TODO: finish this function!
 
         # Perform any required initializations, including selecting an initial
         # move from the game board (i.e., an opening book), or returning

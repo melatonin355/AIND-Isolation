@@ -127,28 +127,33 @@ class CustomPlayer:
         ## If there are no Legal moves just return
         if len(legal_moves) < 0:
             print('No legal moves')
-            pass
-        else:
+            return(-1, -1)
 
-         try:
+        move = legal_moves[0]
+
+        try:
 
             # The search method call (alpha beta or minimax) should happen in
             # here in order to avoid timeout. The try/except block will
             # automatically catch the exception raised by the search method
             # when the timer gets close to expiring
-            if self.method == 'alphabeta':
-                print('trying alphabeta')
-                score, move = self.alphabeta(game, self.search_depth)
+            max_depth = (game.width * game.height if self.iterative else self.search_depth)
+            currentdepth = 1
+            while currentdepth <= max_depth:
+                if self.method == 'alphabeta':
+                    print('trying alphabeta')
+                    score, move = self.alphabeta(game, currentdepth)
 
-            else:
-                score, move = self.minimax(game, self.search_depth)
+                else:
+                    score, move = self.minimax(game, currentdepth)
+                currentdepth += 1
 
 
-         except Timeout:
+        except Timeout:
             # Currently returning first available legal move
-                return legal_moves[0]
+            return move
 
-        # Return the best move from the last completed search iteration
+            # Return the best move from the last completed search iteration
         return move
 
     def minimax(self, game, depth, maximizing_player=True):

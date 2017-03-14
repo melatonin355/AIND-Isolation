@@ -36,19 +36,27 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    return custom(game, player)
+    return custom2(game, player)
 
 # Optimize for a score that reduces opponents moves
-def custom(game, player):
+def custom1(game, player):
 
-    if game.is_loser(player):
-        return -infinity
     if game.is_winner(player):
-        return infinity
-
+        return float("inf")
+    if game.is_loser(player):
+        return float("-inf")
     opponent = len(game.get_legal_moves(game.get_opponent(player)))
     return float(-opponent)
 
+
+# Optimize for a score that improves players moves
+def custom2(game, player):
+    if game.is_winner(player):
+        return float("inf")
+    if game.is_loser(player):
+        return float("-inf")
+    my_score = len(game.get_legal_moves())
+    return float(my_score)
 
 class CustomPlayer:
 
@@ -150,7 +158,7 @@ class CustomPlayer:
             currentdepth = 1
             while currentdepth <= max_depth:
                 if self.method == 'alphabeta':
-                    print('trying alphabeta')
+                    #print('trying alphabeta')
                     score, move = self.alphabeta(game, currentdepth)
 
                 else:

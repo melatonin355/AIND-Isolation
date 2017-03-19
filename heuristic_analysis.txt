@@ -1,3 +1,19 @@
+AI Heuristic choices
+
+
+I decided to use three different heuristic that closely resemble each to have a better understanding how they perform.
+I am facinated in understanding how two particular heuristics that are very much opposites of each other can be combined to create
+a more performant heuristic.
+The first heuristic tries to improve the number of moves a player has available and uses that to optimize the score. This heuristic performed at 56%
+
+
+The first one is trying to improve the numer of moves a player has. After running this heuristic multiple times, I was able to conclude that
+
+The second one is trying to reduce the number of moves an opponent has.  71.43% vs  61.43%
+
+
+The third one uses the information from the first and second heuristic to make a more optimized decision.  62.86% vs 71.43%
+
 
 
 # Optimize for a score that improves players moves
@@ -41,6 +57,9 @@ Student             57.86%
 
 
 
+
+Second heuristic.
+
 # Optimize for a score that reduced adveserials  moves
 *************************
  Evaluating: ID_Improved
@@ -80,3 +99,45 @@ Results:
 ----------
 Student             61.43%
 
+
+
+Third heuristic.
+
+
+*************************
+ Evaluating: ID_Improved
+*************************
+
+Playing Matches:
+----------
+  Match 1: ID_Improved vs   Random    	Result: 16 to 4
+  Match 2: ID_Improved vs   MM_Null   	Result: 15 to 5
+  Match 3: ID_Improved vs   MM_Open   	Result: 12 to 8
+  Match 4: ID_Improved vs MM_Improved 	Result: 12 to 8
+  Match 5: ID_Improved vs   AB_Null   	Result: 15 to 5
+  Match 6: ID_Improved vs   AB_Open   	Result: 11 to 9
+  Match 7: ID_Improved vs AB_Improved 	Result: 7 to 13
+
+
+Results:
+----------
+ID_Improved         62.86%
+
+*************************
+   Evaluating: Student
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 18 to 2
+  Match 2:   Student   vs   MM_Null   	Result: 18 to 2
+  Match 3:   Student   vs   MM_Open   	Result: 15 to 5
+  Match 4:   Student   vs MM_Improved 	Result: 13 to 7
+  Match 5:   Student   vs   AB_Null   	Result: 13 to 7
+  Match 6:   Student   vs   AB_Open   	Result: 11 to 9
+  Match 7:   Student   vs AB_Improved 	Result: 12 to 8
+
+
+Results:
+----------
+Student             71.43%

@@ -36,7 +36,7 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    return custom2(game, player)
+    return custom3(game, player)
 
 # Optimize for a score that reduces opponents moves
 def custom1(game, player):
@@ -57,6 +57,18 @@ def custom2(game, player):
         return float("-inf")
     my_score = len(game.get_legal_moves())
     return float(my_score)
+
+
+# Score that subtracts my moves with opponents moves.
+def custom3(game, player):
+    if game.is_winner(player):
+        return float("inf")
+    if game.is_loser(player):
+        return float("-inf")
+    opponent = len(game.get_legal_moves(game.get_opponent(player)))
+    my_score = len(game.get_legal_moves())
+    return float(my_score - 2 * opponent)
+
 
 class CustomPlayer:
 
